@@ -2,11 +2,7 @@ package app.AccountBalance;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AccountBalanceController {
@@ -34,8 +30,17 @@ public class AccountBalanceController {
         return repository.findById(balance_identifier).orElseThrow(() -> new AccountBalanceNotFoundException(balance_identifier));
     }
 
+    // Create New
     @PostMapping("/balance")
     AccountBalance newAccountBalance(@RequestBody AccountBalance newBalance) {
-        return repository.save(newBalance);
+        // Ensure the ID is not set to avoid conflicts
+        AccountBalance accountBalance = new AccountBalance(newBalance.getUser_identifier(), newBalance.getBalance());
+        return repository.save(accountBalance);
+    }
+
+    // Delete
+    @DeleteMapping("/balance/{balance_identifier}")
+    void delete(@PathVariable long balance_identifier) {
+        repository.deleteById(balance_identifier);
     }
 }

@@ -2,17 +2,21 @@ package app.AccountBalance;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public//  JPA annotation to make this object ready for storage in a JPA-based data store.
 class AccountBalance {
 
-    private @Id
-    @GeneratedValue Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-generates ID
+    private Long id;
+
     private String user_identifier;
     private int balance;
 
+    // Constructor without ID (used for creating new instances)
     public AccountBalance(String user_identifier, int balance) {
         this.user_identifier = user_identifier;
         this.balance = balance;
